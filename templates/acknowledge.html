@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Acknowledgement</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 640px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        h1 { margin-bottom: 8px; font-size: 28px; color: #111827; }
+        .subtitle { margin-bottom: 24px; color: #6b7280; }
+        .detail-box {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+        .detail-title {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+        .detail-time {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .error {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            margin-bottom: 18px;
+        }
+        button {
+            flex: 1;
+            text-align: center;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .yes-btn { background: #16a34a; }
+        .yes-btn:hover { background: #15803d; }
+        .no-btn { background: #dc2626; }
+        .no-btn:hover { background: #b91c1c; }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            resize: vertical;
+            margin-bottom: 18px;
+        }
+        .section-heading {
+            margin: 24px 0 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+        }
+        .status-box {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #eef6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        .muted-note {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: -8px;
+            margin-bottom: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Issue Resolution Check</h1>
+        <p class="subtitle">Please confirm whether your complaint has been fully resolved.</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <div class="detail-box">
+            <span class="detail-title">Complaint ID</span>
+            <div>{{ complaint.complaint_id }}</div>
+        </div>
+
+        {% if complaint.status %}
+        <div class="status-box">
+            Current Status: {{ complaint.status }}
+        </div>
+        {% endif %}
+
+        {% if complaint.resolution %}
+        <div class="detail-box">
+            <span class="detail-title">Initial Resolution Provided</span>
+            <div>{{ complaint.resolution }}</div>
+            {% if complaint.resolution_timestamp %}
+            <div class="detail-time">Updated on: {{ complaint.resolution_timestamp }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if complaint.extra_issue_1 or complaint.extra_solution_1 %}
+        <div class="section-heading">Follow-up Cycle 1</div>
+        {% endif %}
+
+        {% if complaint.extra_issue_1 %}
+        <div class="detail-box">
+            <span class="detail-title">Extra Issue 1</span>
+            <div>{{ complaint.extra_issue_1 }}</div>
+            {% if complaint.extra_issue_1_timestamp %}
+            <div class="detail-time">Submitted on: {{ complaint.extra_issue_1_timestamp }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if complaint.extra_solution_1 %}
+        <div class="detail-box">
+            <span class="detail-title">Extra Solution 1</span>
+            <div>{{ complaint.extra_solution_1 }}</div>
+            {% if complaint.extra_solution_1_timestamp %}
+            <div class="detail-time">Provided on: {{ complaint.extra_solution_1_timestamp }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if complaint.extra_issue_2 or complaint.extra_solution_2 %}
+        <div class="section-heading">Follow-up Cycle 2</div>
+        {% endif %}
+
+        {% if complaint.extra_issue_2 %}
+        <div class="detail-box">
+            <span class="detail-title">Extra Issue 2</span>
+            <div>{{ complaint.extra_issue_2 }}</div>
+            {% if complaint.extra_issue_2_timestamp %}
+            <div class="detail-time">Submitted on: {{ complaint.extra_issue_2_timestamp }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if complaint.extra_solution_2 %}
+        <div class="detail-box">
+            <span class="detail-title">Extra Solution 2</span>
+            <div>{{ complaint.extra_solution_2 }}</div>
+            {% if complaint.extra_solution_2_timestamp %}
+            <div class="detail-time">Provided on: {{ complaint.extra_solution_2_timestamp }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="section-heading">Your Confirmation</div>
+        <p class="muted-note">Select "Yes" if the latest solution fixed the issue. Otherwise, describe what still remains.</p>
+
+        <form method="post" action="/acknowledge/{{ complaint.complaint_id }}/yes">
+            <input type="hidden" name="token" value="{{ token }}">
+            <div class="button-group">
+                <button type="submit" class="yes-btn">Yes, I’m satisfied</button>
+            </div>
+        </form>
+
+        <form method="post" action="/acknowledge/{{ complaint.complaint_id }}/no">
+            <input type="hidden" name="token" value="{{ token }}">
+            <textarea
+                name="follow_up_issue"
+                placeholder="If not satisfied, describe what issue still remains..."
+                required
+            >{{ complaint.follow_up_issue }}</textarea>
+            <div class="button-group">
+                <button type="submit" class="no-btn">No, still facing issue</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

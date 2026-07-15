@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .subtitle {
+            margin-bottom: 24px;
+            color: #6b7280;
+        }
+
+        .details-section {
+            margin-bottom: 32px;
+        }
+
+        .detail-item {
+            margin-bottom: 18px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .detail-value {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #f9fafb;
+            color: #374151;
+            font-size: 15px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select,
+        textarea,
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        select:focus,
+        textarea:focus,
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        button,
+        .back-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            background: #6b7280;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Complaint Details</h1>
+        <p class="subtitle">View complaint information and update its resolution status.</p>
+
+        <div class="details-section">
+            <div class="detail-item">
+                <span class="detail-label">Complaint ID</span>
+                <div class="detail-value">{{ complaint.complaint_id }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Timestamp</span>
+                <div class="detail-value">{{ complaint.timestamp }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Name</span>
+                <div class="detail-value">{{ complaint.name }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Email</span>
+                <div class="detail-value">{{ complaint.email }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Device Type</span>
+                <div class="detail-value">{{ complaint.device_type }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Department</span>
+                <div class="detail-value">{{ complaint.department }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Device ID</span>
+                <div class="detail-value">{{ complaint.device_id }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Issue</span>
+                <div class="detail-value">{{ complaint.issue }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Description</span>
+                <div class="detail-value">{{ complaint.description }}</div>
+            </div>
+
+            {% if complaint.resolution %}
+            <div class="detail-item">
+                <span class="detail-label">Resolution</span>
+                <div class="detail-value">{{ complaint.resolution }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.resolution_timestamp %}
+            <div class="detail-item">
+                <span class="detail-label">Resolved At</span>
+                <div class="detail-value">{{ complaint.resolution_timestamp }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_issue_1 %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Issue 1</span>
+                <div class="detail-value">{{ complaint.extra_issue_1 }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_issue_1_timestamp %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Issue 1 Timestamp</span>
+                <div class="detail-value">{{ complaint.extra_issue_1_timestamp }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_solution_1 %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Solution 1</span>
+                <div class="detail-value">{{ complaint.extra_solution_1 }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_solution_1_timestamp %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Solution 1 Timestamp</span>
+                <div class="detail-value">{{ complaint.extra_solution_1_timestamp }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_issue_2 %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Issue 2</span>
+                <div class="detail-value">{{ complaint.extra_issue_2 }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_issue_2_timestamp %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Issue 2 Timestamp</span>
+                <div class="detail-value">{{ complaint.extra_issue_2_timestamp }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_solution_2 %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Solution 2</span>
+                <div class="detail-value">{{ complaint.extra_solution_2 }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.extra_solution_2_timestamp %}
+            <div class="detail-item">
+                <span class="detail-label">Extra Solution 2 Timestamp</span>
+                <div class="detail-value">{{ complaint.extra_solution_2_timestamp }}</div>
+            </div>
+            {% endif %}
+
+            {% if complaint.status %}
+            <div class="detail-item">
+                <span class="detail-label">Current Status</span>
+                <div class="detail-value">
+                    <span class="status-badge">{{ complaint.status }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <form method="post" action="/resolve">
+            <input type="hidden" name="token" value="{{ token }}">
+            <input type="hidden" name="complaint_id" value="{{ complaint.complaint_id }}">
+
+            <div class="form-group">
+                <label for="status_select">Update Status</label>
+                <select name="status" id="status_select">
+                    <option value="In Progress" {% if complaint.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                    <option value="Resolved" {% if complaint.status == "Resolved" %}selected{% endif %}>Resolved</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="solution">
+                    {% if complaint.extra_issue_1 and not complaint.extra_solution_1 %}
+                        Extra Solution 1 <span class="required">*</span>
+                    {% elif complaint.extra_issue_2 and not complaint.extra_solution_2 %}
+                        Extra Solution 2 <span class="required">*</span>
+                    {% else %}
+                        Solution <span class="required">*</span>
+                    {% endif %}
+                </label>
+
+                <textarea name="solution" id="solution" rows="6" required>{% if complaint.extra_issue_1 and not complaint.extra_solution_1 %}{{ complaint.extra_solution_1 or '' }}{% elif complaint.extra_issue_2 and not complaint.extra_solution_2 %}{{ complaint.extra_solution_2 or '' }}{% else %}{{ complaint.resolution or '' }}{% endif %}</textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

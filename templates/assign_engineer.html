@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Complaint</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .subtitle {
+            margin-bottom: 24px;
+            color: #6b7280;
+        }
+
+        .error, .success {
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .details-section {
+            margin-bottom: 28px;
+        }
+
+        .detail-item {
+            margin-bottom: 18px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .detail-value {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #f9fafb;
+            color: #374151;
+            font-size: 15px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            background: #fff;
+        }
+
+        select:focus, input:focus {
+            border-color: #2563eb;
+        }
+
+        button, .back-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            margin-top: 12px;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Assign Complaint</h1>
+        <p class="subtitle">Review complaint details and assign it to a resolving engineer.</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if success %}
+        <div class="success">{{ success }}</div>
+        {% endif %}
+
+        <div class="details-section">
+            <div class="detail-item">
+                <span class="detail-label">Complaint ID</span>
+                <div class="detail-value">{{ complaint.complaint_id }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Timestamp</span>
+                <div class="detail-value">{{ complaint.timestamp }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Name</span>
+                <div class="detail-value">{{ complaint.name }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Email</span>
+                <div class="detail-value">{{ complaint.email }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Device Type</span>
+                <div class="detail-value">{{ complaint.device_type }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Department</span>
+                <div class="detail-value">{{ complaint.department }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Device ID</span>
+                <div class="detail-value">{{ complaint.device_id }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Issue</span>
+                <div class="detail-value">{{ complaint.issue }}</div>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Description</span>
+                <div class="detail-value">{{ complaint.description }}</div>
+            </div>
+        </div>
+
+        <form method="post" action="{{ request.url_for('assign_engineer_post') }}">
+            <input type="hidden" name="token" value="{{ token }}">
+
+            <div class="form-group">
+                <label for="engineer_code">Resolving Engineer <span class="required">*</span></label>
+                <select name="engineer_code" id="engineer_code" required>
+                    <option value="">Select engineer</option>
+                    <option value="RE1" {% if selected_engineer == "RE1" %}selected{% endif %}>RE1</option>
+                    <option value="RE2" {% if selected_engineer == "RE2" %}selected{% endif %}>RE2</option>
+                    <option value="RE3" {% if selected_engineer == "RE3" %}selected{% endif %}>RE3</option>
+                </select>
+            </div>
+
+            <button type="submit">Assign Engineer</button>
+            <a href="/" class="back-btn">Back to Form</a>
+        </form>
+    </div>
+</body>
+</html>

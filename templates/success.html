@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Registered</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 560px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        h1 { margin-bottom: 8px; font-size: 28px; color: #111827; }
+        .subtitle { margin-bottom: 24px; color: #6b7280; }
+        .success {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+        .detail-box {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+        .detail-box strong {
+            color: #111827;
+        }
+        .button-group { display: flex; gap: 10px; margin-top: 18px; }
+        a.button {
+            flex: 1;
+            text-align: center;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        a.button:hover { background: #1d4ed8; }
+        .back-link {
+            display: inline-block;
+            margin-top: 14px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Complaint Registered</h1>
+        <p class="subtitle">Your complaint has been successfully registered in the system.</p>
+
+        <div class="success">
+            The complaint has been registered successfully.
+        </div>
+
+        <div class="detail-box">
+            <strong>Complaint ID:</strong> {{ complaint_id }}
+        </div>
+
+        <div class="detail-box">
+            <strong>Date and Time:</strong> {{ timestamp }}
+        </div>
+
+        <div class="button-group">
+            <a href="/?edit_id={{ complaint_id }}" class="button">Edit Response</a>
+        </div>
+    </div>
+</body>
+</html>

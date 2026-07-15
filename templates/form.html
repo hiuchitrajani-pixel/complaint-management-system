@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Registration</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 32px;
+        }
+
+        p {
+            margin-bottom: 24px;
+            color: #6b7280;
+        }
+
+        .success, .error {
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        select:focus, textarea:focus, input:focus {
+            border-color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if edit_id %}
+        <h1>Edit Complaint {{ edit_id }}</h1>
+        <p>Modify the details below to update your complaint.</p>
+        {% else %}
+        <h1>Complaint Registration Form</h1>
+        <p>Fill in the details to register your complaint.</p>
+        {% endif %}
+
+        {% if submitted %}
+        <div class="success">Complaint is registered. Your complaint no. is {{ complaint_id }}.</div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form id="complaint-form" method="post" action="/">
+            <input type="hidden" name="edit_id" value="{{ edit_id or '' }}">
+            <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" value="{{ name or '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" value="{{ email or '' }}" pattern="[a-zA-Z0-9._%+-]+@mehtagroup\.com" title="Please enter a valid email address ending with @mehtagroup.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="device_type">Device Type <span class="required">*</span></label>
+                <select name="device_type" id="device_type" required>
+                    <option value="">Select device type</option>
+                    {% for dtype in device_types %}
+                    <option value="{{ dtype }}" {% if selected_device_type == dtype %}selected{% endif %}>{{ dtype }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="department">Department <span class="required">*</span></label>
+                <select name="department" id="department" required>
+                    <option value="">Select department</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept }}" {% if selected_department == dept %}selected{% endif %}>{{ dept }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="device_id">Device ID <span class="required">*</span></label>
+                <select name="device_id" id="device_id" required>
+                    <option value="">Select device ID</option>
+                    {% for device in devices %}
+                    <option value="{{ device.device_id }}" {% if selected_device_id == device.device_id %}selected{% endif %}>{{ device.device_id }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="issue">Issue Type <span class="required">*</span></label>
+                <select name="issue" id="issue" required>
+                    <option value="">Select issue</option>
+                    {% for item in issues %}
+                    <option value="{{ item }}" {% if issue == item %}selected{% endif %}>{{ item }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group" id="custom-issue-group" style="display: none;">
+                <label for="custom_issue">Please specify the issue you faced <span class="required">*</span></label>
+                <input type="text" id="custom_issue" name="custom_issue" value="{{ custom_issue or '' }}" placeholder="Describe the issue">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Problem Description <span class="required">*</span></label>
+                <textarea name="description" id="description" required>{{ description or '' }}</textarea>
+            </div>
+
+            <button type="submit">Submit Complaint</button>
+        </form>
+    </div>
+
+    <script id="device-data" type="application/json">{{ device_data_json | safe }}</script>
+    <script>
+        const form = document.getElementById('complaint-form');
+        const deviceData = JSON.parse(document.getElementById('device-data').textContent);
+        const issueSelect = document.getElementById('issue');
+        const customIssueGroup = document.getElementById('custom-issue-group');
+        const customIssueInput = document.getElementById('custom_issue');
+        let isSubmitting = false;
+        const draftFields = ['name', 'email', 'issue', 'custom_issue', 'description'];
+        let selectedDepartment = "{{ selected_department or '' }}";
+        let selectedDeviceId = "{{ selected_device_id or '' }}";
+
+        function safeSetItem(key, value) {
+            try {
+                sessionStorage.setItem(key, value);
+            } catch (e) {}
+        }
+
+        function safeGetItem(key) {
+            try {
+                return sessionStorage.getItem(key);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function safeRemoveItem(key) {
+            try {
+                sessionStorage.removeItem(key);
+            } catch (e) {}
+        }
+
+        function saveDraft() {
+            draftFields.forEach((field) => {
+                const input = form[field];
+                if (input) {
+                    safeSetItem(`complaint-${field}`, input.value);
+                }
+            });
+        }
+
+        function restoreDraft() {
+            draftFields.forEach((field) => {
+                const saved = safeGetItem(`complaint-${field}`);
+                if (saved !== null && form[field] && !form[field].value) {
+                    form[field].value = saved;
+                }
+            });
+        }
+
+        function clearDraft() {
+            draftFields.forEach((field) => {
+                safeRemoveItem(`complaint-${field}`);
+            });
+        }
+
+        function toggleCustomIssueField() {
+            const showCustom = issueSelect.value === 'Other issues';
+            customIssueGroup.style.display = showCustom ? 'block' : 'none';
+            if (!showCustom) {
+                customIssueInput.value = '';
+            }
+        }
+
+        function updateDepartments() {
+            const deviceType = form.device_type.value;
+            const departmentSelect = form.department;
+            const deviceSelect = form.device_id;
+
+            departmentSelect.innerHTML = '<option value="">Select department</option>';
+            deviceSelect.innerHTML = '<option value="">Select device ID</option>';
+
+            const departments = [...new Set(
+                deviceData
+                    .filter(row => row.device_type === deviceType)
+                    .map(row => row.department.trim())
+            )].sort();
+
+            departments.forEach((dept) => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                if (dept === selectedDepartment) {
+                    option.selected = true;
+                }
+                departmentSelect.appendChild(option);
+            });
+
+            if (departmentSelect.value) {
+                updateDevices();
+            }
+        }
+
+        function updateDevices() {
+            const deviceType = form.device_type.value;
+            const department = form.department.value;
+            const deviceSelect = form.device_id;
+
+            deviceSelect.innerHTML = '<option value="">Select device ID</option>';
+
+            const devices = deviceData
+                .filter(row => row.device_type === deviceType && row.department.trim() === department.trim())
+                .sort((a, b) => a.device_id.localeCompare(b.device_id));
+
+            devices.forEach((device) => {
+                const option = document.createElement('option');
+                option.value = device.device_id;
+                option.textContent = device.device_id;
+                if (device.device_id === selectedDeviceId) {
+                    option.selected = true;
+                }
+                deviceSelect.appendChild(option);
+            });
+        }
+
+        issueSelect.addEventListener('change', () => {
+            toggleCustomIssueField();
+            saveDraft();
+        });
+
+        form.device_type.addEventListener('change', () => {
+            selectedDepartment = '';
+            selectedDeviceId = '';
+            form.department.value = '';
+            form.device_id.value = '';
+            updateDepartments();
+            saveDraft();
+        });
+
+        form.department.addEventListener('change', () => {
+            selectedDepartment = form.department.value;
+            selectedDeviceId = '';
+            form.device_id.value = '';
+            updateDevices();
+            saveDraft();
+        });
+
+        form.device_id.addEventListener('change', () => {
+            selectedDeviceId = form.device_id.value;
+            saveDraft();
+        });
+
+        draftFields.forEach((field) => {
+            if (form[field]) {
+                form[field].addEventListener('input', saveDraft);
+            }
+        });
+
+        window.addEventListener('beforeunload', (event) => {
+            if (!isSubmitting && (form.device_type.value || form.department.value || form.device_id.value || form.name.value || form.issue.value || form.description.value)) {
+                event.preventDefault();
+                event.returnValue = '';
+                return '';
+            }
+        });
+
+        form.addEventListener('submit', (event) => {
+            if (issueSelect.value === 'Other issues' && !customIssueInput.value.trim()) {
+                event.preventDefault();
+                customIssueInput.focus();
+                return;
+            }
+            isSubmitting = true;
+            clearDraft();
+        });
+
+        window.addEventListener('load', () => {
+            restoreDraft();
+            toggleCustomIssueField();
+            updateDepartments();
+            if (history.replaceState) {
+                history.replaceState(null, null, window.location.pathname);
+            }
+        });
+
+        window.addEventListener('pageshow', (event) => {
+            const isBackForward = event.persisted || 
+                (window.performance && window.performance.navigation && window.performance.navigation.type === 2) ||
+                (window.performance && window.performance.getEntriesByType && 
+                 window.performance.getEntriesByType("navigation")[0] && 
+                 window.performance.getEntriesByType("navigation")[0].type === "back_forward");
+
+            if (isBackForward) {
+                const compForm = document.getElementById('complaint-form');
+                if (compForm) {
+                    compForm.reset();
+                    Array.from(compForm.elements).forEach(element => {
+                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            element.value = '';
+                        } else if (element.tagName === 'SELECT') {
+                            element.selectedIndex = 0;
+                        }
+                    });
+                    clearDraft();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
