@@ -966,6 +966,14 @@ Support Team
                 pass
 
 
+@app.get("/hathisidheecement_logo.jpg")
+def get_logo():
+    logo_path = os.path.join(os.path.dirname(__file__), "hathisidheecement_logo.jpg")
+    if os.path.exists(logo_path):
+        return FileResponse(logo_path)
+    return HTMLResponse("Logo not found", status_code=404)
+
+
 @app.get("/", response_class=HTMLResponse)
 def home(
     request: Request,
