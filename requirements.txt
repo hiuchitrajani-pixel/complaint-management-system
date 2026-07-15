@@ -7,3 +7,4 @@ python-multipart==0.0.9
 itsdangerous==2.2.0
 apscheduler==3.11.3
 python-dotenv==1.2.2
+msoffcrypto-tool==6.0.0
