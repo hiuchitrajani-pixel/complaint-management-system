@@ -10,7 +10,6 @@ __pycache__/
 
 # Local Databases (Excel files)
 complaints.xlsx
-RNV-DESKTOP-DETAILS.xlsx
 *.tmp
 
 # Secrets and environment variables
