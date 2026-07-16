@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Engineer Assigned</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f4f7fb;
             color: #1f2937;
         }
+
         .container {
             max-width: 560px;
             margin: 40px auto;
@@ -20,8 +25,33 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
-        h1 { margin-bottom: 8px; font-size: 28px; color: #111827; }
-        .subtitle { margin-bottom: 24px; color: #6b7280; }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .app-logo {
+            width: 240px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .subtitle {
+            margin-bottom: 24px;
+            color: #6b7280;
+        }
+
         .success {
             margin-bottom: 18px;
             padding: 12px 14px;
@@ -31,6 +61,7 @@
             color: #166534;
             border: 1px solid #86efac;
         }
+
         .detail-box {
             margin-bottom: 18px;
             padding: 12px 14px;
@@ -38,10 +69,17 @@
             background: #f9fafb;
             border: 1px solid #e5e7eb;
         }
+
         .detail-box strong {
             color: #111827;
         }
-        .button-group { display: flex; gap: 10px; margin-top: 18px; }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
         a.button {
             flex: 1;
             text-align: center;
@@ -55,7 +93,11 @@
             cursor: pointer;
             text-decoration: none;
         }
-        a.button:hover { background: #1d4ed8; }
+
+        a.button:hover {
+            background: #1d4ed8;
+        }
+
         .logo-top-corner {
             position: absolute;
             top: 20px;
@@ -74,6 +116,7 @@
         }
     </style>
 </head>
+
 <body>
     <img src="/hathisidheecement_logo.jpg" alt="Hathi Sidhee Cement Logo" class="logo-top-corner">
     <div class="container">
@@ -107,4 +150,5 @@
         {% endif %}
     </div>
 </body>
+
 </html>

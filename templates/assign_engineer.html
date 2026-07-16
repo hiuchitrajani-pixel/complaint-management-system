@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assign Complaint</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -23,6 +26,21 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .app-logo {
+            width: 240px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
         h1 {
             margin-bottom: 8px;
             font-size: 32px;
@@ -34,7 +52,8 @@
             color: #6b7280;
         }
 
-        .error, .success {
+        .error,
+        .success {
             margin-bottom: 20px;
             padding: 12px 14px;
             border-radius: 10px;
@@ -90,7 +109,8 @@
             font-weight: 600;
         }
 
-        select, input {
+        select,
+        input {
             width: 100%;
             padding: 12px 14px;
             border: 1px solid #d1d5db;
@@ -100,11 +120,13 @@
             background: #fff;
         }
 
-        select:focus, input:focus {
+        select:focus,
+        input:focus {
             border-color: #2563eb;
         }
 
-        button, .back-btn {
+        button,
+        .back-btn {
             display: inline-block;
             width: 100%;
             padding: 14px;
@@ -150,6 +172,7 @@
                 font-size: 26px;
             }
         }
+
         .logo-top-corner {
             position: absolute;
             top: 20px;
@@ -168,6 +191,7 @@
         }
     </style>
 </head>
+
 <body>
     <img src="/hathisidheecement_logo.jpg" alt="Hathi Sidhee Cement Logo" class="logo-top-corner">
     <div class="container">
@@ -236,9 +260,9 @@
                 <label for="engineer_code">Resolving Engineer <span class="required">*</span></label>
                 <select name="engineer_code" id="engineer_code" required>
                     <option value="">Select engineer</option>
-                    <option value="RE1" {% if selected_engineer == "RE1" %}selected{% endif %}>RE1</option>
-                    <option value="RE2" {% if selected_engineer == "RE2" %}selected{% endif %}>RE2</option>
-                    <option value="RE3" {% if selected_engineer == "RE3" %}selected{% endif %}>RE3</option>
+                    <option value="RE1" {% if selected_engineer=="RE1" %}selected{% endif %}>RE1</option>
+                    <option value="RE2" {% if selected_engineer=="RE2" %}selected{% endif %}>RE2</option>
+                    <option value="RE3" {% if selected_engineer=="RE3" %}selected{% endif %}>RE3</option>
                 </select>
             </div>
 
@@ -247,4 +271,5 @@
         </form>
     </div>
 </body>
+
 </html>

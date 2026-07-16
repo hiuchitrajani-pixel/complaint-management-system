@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reopen Complaint</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -23,6 +26,21 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .app-logo {
+            width: 240px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
         h1 {
             margin-bottom: 8px;
             font-size: 32px;
@@ -33,7 +51,8 @@
             color: #6b7280;
         }
 
-        .success, .error {
+        .success,
+        .error {
             margin-bottom: 20px;
             padding: 12px 14px;
             border-radius: 10px;
@@ -62,7 +81,9 @@
             font-weight: 600;
         }
 
-        select, textarea, input {
+        select,
+        textarea,
+        input {
             width: 100%;
             padding: 12px 14px;
             border: 1px solid #d1d5db;
@@ -76,7 +97,9 @@
             resize: vertical;
         }
 
-        select:focus, textarea:focus, input:focus {
+        select:focus,
+        textarea:focus,
+        input:focus {
             border-color: #2563eb;
         }
 
@@ -111,6 +134,7 @@
                 font-size: 26px;
             }
         }
+
         .logo-top-corner {
             position: absolute;
             top: 20px;
@@ -129,6 +153,7 @@
         }
     </style>
 </head>
+
 <body>
     <img src="/hathisidheecement_logo.jpg" alt="Hathi Sidhee Cement Logo" class="logo-top-corner">
     <div class="container">
@@ -154,4 +179,5 @@
         </form>
     </div>
 </body>
+
 </html>

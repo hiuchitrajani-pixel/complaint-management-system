@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complaint Registration</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -23,6 +26,21 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .app-logo {
+            width: 240px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
         h1 {
             margin-bottom: 8px;
             font-size: 32px;
@@ -33,7 +51,8 @@
             color: #6b7280;
         }
 
-        .success, .error {
+        .success,
+        .error {
             margin-bottom: 20px;
             padding: 12px 14px;
             border-radius: 10px;
@@ -62,7 +81,9 @@
             font-weight: 600;
         }
 
-        select, textarea, input {
+        select,
+        textarea,
+        input {
             width: 100%;
             padding: 12px 14px;
             border: 1px solid #d1d5db;
@@ -76,7 +97,9 @@
             resize: vertical;
         }
 
-        select:focus, textarea:focus, input:focus {
+        select:focus,
+        textarea:focus,
+        input:focus {
             border-color: #2563eb;
         }
 
@@ -111,6 +134,7 @@
                 font-size: 26px;
             }
         }
+
         .logo-top-corner {
             position: absolute;
             top: 20px;
@@ -129,6 +153,7 @@
         }
     </style>
 </head>
+
 <body>
     <img src="/hathisidheecement_logo.jpg" alt="Hathi Sidhee Cement Logo" class="logo-top-corner">
     <div class="container">
@@ -157,7 +182,9 @@
 
             <div class="form-group">
                 <label for="email">Email Address <span class="required">*</span></label>
-                <input type="email" id="email" name="email" value="{{ email or '' }}" pattern="[a-zA-Z0-9._%+-]+@mehtagroup\.com" title="Please enter a valid email address ending with @mehtagroup.com" required>
+                <input type="email" id="email" name="email" value="{{ email or '' }}"
+                    pattern="[a-zA-Z0-9._%+-]+@mehtagroup\.com"
+                    title="Please enter a valid email address ending with @mehtagroup.com" required>
             </div>
 
             <div class="form-group">
@@ -165,7 +192,8 @@
                 <select name="device_type" id="device_type" required>
                     <option value="">Select device type</option>
                     {% for dtype in device_types %}
-                    <option value="{{ dtype }}" {% if selected_device_type == dtype %}selected{% endif %}>{{ dtype }}</option>
+                    <option value="{{ dtype }}" {% if selected_device_type==dtype %}selected{% endif %}>{{ dtype }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
@@ -175,7 +203,7 @@
                 <select name="department" id="department" required>
                     <option value="">Select department</option>
                     {% for dept in departments %}
-                    <option value="{{ dept }}" {% if selected_department == dept %}selected{% endif %}>{{ dept }}</option>
+                    <option value="{{ dept }}" {% if selected_department==dept %}selected{% endif %}>{{ dept }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -185,7 +213,8 @@
                 <select name="device_id" id="device_id" required>
                     <option value="">Select device ID</option>
                     {% for device in devices %}
-                    <option value="{{ device.device_id }}" {% if selected_device_id == device.device_id %}selected{% endif %}>{{ device.device_id }}</option>
+                    <option value="{{ device.device_id }}" {% if selected_device_id==device.device_id %}selected{% endif
+                        %}>{{ device.device_id }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -195,14 +224,15 @@
                 <select name="issue" id="issue" required>
                     <option value="">Select issue</option>
                     {% for item in issues %}
-                    <option value="{{ item }}" {% if issue == item %}selected{% endif %}>{{ item }}</option>
+                    <option value="{{ item }}" {% if issue==item %}selected{% endif %}>{{ item }}</option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-group" id="custom-issue-group" style="display: none;">
                 <label for="custom_issue">Please specify the issue you faced <span class="required">*</span></label>
-                <input type="text" id="custom_issue" name="custom_issue" value="{{ custom_issue or '' }}" placeholder="Describe the issue">
+                <input type="text" id="custom_issue" name="custom_issue" value="{{ custom_issue or '' }}"
+                    placeholder="Describe the issue">
             </div>
 
             <div class="form-group">
@@ -229,7 +259,7 @@
         function safeSetItem(key, value) {
             try {
                 sessionStorage.setItem(key, value);
-            } catch (e) {}
+            } catch (e) { }
         }
 
         function safeGetItem(key) {
@@ -243,7 +273,7 @@
         function safeRemoveItem(key) {
             try {
                 sessionStorage.removeItem(key);
-            } catch (e) {}
+            } catch (e) { }
         }
 
         function saveDraft() {
@@ -390,11 +420,11 @@
         });
 
         window.addEventListener('pageshow', (event) => {
-            const isBackForward = event.persisted || 
+            const isBackForward = event.persisted ||
                 (window.performance && window.performance.navigation && window.performance.navigation.type === 2) ||
-                (window.performance && window.performance.getEntriesByType && 
-                 window.performance.getEntriesByType("navigation")[0] && 
-                 window.performance.getEntriesByType("navigation")[0].type === "back_forward");
+                (window.performance && window.performance.getEntriesByType &&
+                    window.performance.getEntriesByType("navigation")[0] &&
+                    window.performance.getEntriesByType("navigation")[0].type === "back_forward");
 
             if (isBackForward) {
                 const compForm = document.getElementById('complaint-form');
@@ -413,4 +443,5 @@
         });
     </script>
 </body>
+
 </html>

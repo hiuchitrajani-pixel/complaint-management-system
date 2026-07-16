@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +24,21 @@
             padding: 32px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .app-logo {
+            width: 240px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
         }
 
         h1 {
@@ -156,6 +172,7 @@
                 flex-direction: column;
             }
         }
+
         .logo-top-corner {
             position: absolute;
             top: 20px;
@@ -174,6 +191,7 @@
         }
     </style>
 </head>
+
 <body>
     <img src="/hathisidheecement_logo.jpg" alt="Hathi Sidhee Cement Logo" class="logo-top-corner">
     <div class="container">
@@ -313,24 +331,26 @@
             <div class="form-group">
                 <label for="status_select">Update Status</label>
                 <select name="status" id="status_select">
-                    <option value="In Progress" {% if complaint.status == "In Progress" %}selected{% endif %}>In Progress</option>
-                    <option value="Pending" {% if complaint.status == "Pending" %}selected{% endif %}>Pending</option>
-                    <option value="Resolved" {% if complaint.status == "Resolved" %}selected{% endif %}>Resolved</option>
+                    <option value="In Progress" {% if complaint.status=="In Progress" %}selected{% endif %}>In Progress
+                    </option>
+                    <option value="Pending" {% if complaint.status=="Pending" %}selected{% endif %}>Pending</option>
+                    <option value="Resolved" {% if complaint.status=="Resolved" %}selected{% endif %}>Resolved</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="solution">
                     {% if complaint.extra_issue_1 and not complaint.extra_solution_1 %}
-                        Extra Solution 1 <span class="required" id="solution_asterisk">*</span>
+                    Extra Solution 1 <span class="required" id="solution_asterisk">*</span>
                     {% elif complaint.extra_issue_2 and not complaint.extra_solution_2 %}
-                        Extra Solution 2 <span class="required" id="solution_asterisk">*</span>
+                    Extra Solution 2 <span class="required" id="solution_asterisk">*</span>
                     {% else %}
-                        Solution <span class="required" id="solution_asterisk">*</span>
+                    Solution <span class="required" id="solution_asterisk">*</span>
                     {% endif %}
                 </label>
 
-                <textarea name="solution" id="solution" rows="6" required>{% if complaint.extra_issue_1 and not complaint.extra_solution_1 %}{{ complaint.extra_solution_1 or '' }}{% elif complaint.extra_issue_2 and not complaint.extra_solution_2 %}{{ complaint.extra_solution_2 or '' }}{% else %}{{ complaint.resolution or '' }}{% endif %}</textarea>
+                <textarea name="solution" id="solution" rows="6"
+                    required>{% if complaint.extra_issue_1 and not complaint.extra_solution_1 %}{{ complaint.extra_solution_1 or '' }}{% elif complaint.extra_issue_2 and not complaint.extra_solution_2 %}{{ complaint.extra_solution_2 or '' }}{% else %}{{ complaint.resolution or '' }}{% endif %}</textarea>
             </div>
 
             <div class="button-group">
@@ -358,4 +378,5 @@
         </script>
     </div>
 </body>
+
 </html>
