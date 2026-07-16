@@ -224,6 +224,73 @@ class FollowUpWorkflowTests(unittest.TestCase):
             )
             self.assertEqual(response_ok.status_code, 303)
 
+    def test_resolve_complaint_as_pending_clears_excel_data_and_emails_engineer(self):
+        token = main.generate_token({
+            "complaint_id": "CMP-0001",
+            "role": "engineer_action",
+            "engineer_code": "RE1",
+        })
+
+        with patch.object(main, "send_email", return_value=True) as mocked_send_email:
+            response = main.resolve_complaint(
+                request=DummyRequest(),
+                token=token,
+                status="Pending",
+                solution="Temporary work notes"
+            )
+
+        self.assertEqual(response.status_code, 303)
+        self.assertIn("status=Pending", response.headers["location"])
+
+        # Verify Excel details (since follow-up 2 was pending, extra_solution_2 is cleared)
+        updated = main.get_complaint_by_id("CMP-0001")
+        self.assertEqual(updated["status"], "Pending")
+        self.assertEqual(updated["extra_solution_2"], "") # Cleared!
+        self.assertEqual(updated["extra_solution_2_timestamp"], "") # Cleared!
+        self.assertEqual(updated["resolution"], "Original resolution") # Left intact
+
+        # Verify email was sent to engineer (RE1 email)
+        sent_emails = [call.args[0] for call in mocked_send_email.call_args_list]
+        engineer_email = main.ENGINEER_EMAIL_MAP.get("RE1")
+        self.assertIn(engineer_email, sent_emails)
+        
+        # Verify customer did not receive email
+        self.assertNotIn("user@mehtagroup.com", sent_emails)
+
+    def test_resolve_fresh_complaint_as_pending_clears_resolution(self):
+        # Setup a fresh complaint without extra issues but with some resolution
+        wb = main.load_complaints_workbook()
+        ws = wb["Complaints"]
+        ws.append([
+            "CMP-0004", "2026-01-01 10:00:00", "Fresh User", "fresh@mehtagroup.com",
+            "Laptop", "IT", "L3", "Issue", "Desc", "RE1", "2026-01-01 10:05:00",
+            "Original resolution", "2026-01-01 10:10:00", "", "", "", "", "", "", "", "",
+            "Assigned", ""
+        ])
+        table = ws.tables["ComplaintsTable"]
+        table.ref = f"A4:W{ws.max_row}"
+        main.save_complaints_workbook(wb)
+        wb.close()
+
+        token = main.generate_token({
+            "complaint_id": "CMP-0004",
+            "role": "engineer_action",
+            "engineer_code": "RE1",
+        })
+
+        with patch.object(main, "send_email", return_value=True):
+            main.resolve_complaint(
+                request=DummyRequest(),
+                token=token,
+                status="Pending",
+                solution="Pending notes"
+            )
+
+        updated = main.get_complaint_by_id("CMP-0004")
+        self.assertEqual(updated["status"], "Pending")
+        self.assertEqual(updated["resolution"], "") # Cleared!
+        self.assertEqual(updated["resolution_timestamp"], "") # Cleared!
+
 
 if __name__ == "__main__":
     unittest.main()

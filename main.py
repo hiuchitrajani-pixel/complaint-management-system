@@ -621,11 +621,11 @@ def save_extra_solution(complaint_id, solution_text, status="Closed"):
                 if extra1_issue and not extra1_solution:
                     ws.cell(row=r, column=extra1_solution_col).value = solution_text.strip()
                     if extra1_solution_time_col:
-                        ws.cell(row=r, column=extra1_solution_time_col).value = now_str
+                        ws.cell(row=r, column=extra1_solution_time_col).value = "" if status == "Pending" else now_str
                 elif extra2_issue and not extra2_solution:
                     ws.cell(row=r, column=extra2_solution_col).value = solution_text.strip()
                     if extra2_solution_time_col:
-                        ws.cell(row=r, column=extra2_solution_time_col).value = now_str
+                        ws.cell(row=r, column=extra2_solution_time_col).value = "" if status == "Pending" else now_str
                 else:
                     wb.close()
                     return False, "No pending extra issue available for extra solution."
@@ -736,7 +736,7 @@ def resolve_in_excel(complaint_id, status, solution):
                 if resolution_col:
                     ws.cell(row=r, column=resolution_col).value = solution
                 if resolution_time_col:
-                    ws.cell(row=r, column=resolution_time_col).value = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    ws.cell(row=r, column=resolution_time_col).value = "" if status == "Pending" else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 updated = True
                 break
 
@@ -1684,6 +1684,9 @@ def resolve_complaint(
     if not complaint:
         return HTMLResponse("<h2>Complaint not found</h2>", status_code=404)
 
+    if status == "Pending":
+        solution = ""
+
     try:
         if complaint.get("extra_issue_1") and not complaint.get("extra_solution_1"):
             ok, msg = save_extra_solution(complaint_id, solution.strip(), status)
@@ -1700,15 +1703,33 @@ def resolve_complaint(
 
     updated_complaint = get_complaint_by_id(complaint_id)
 
-    customer_token = generate_token({
-        "complaint_id": complaint_id,
-        "role": "customer_ack"
-    })
-    acknowledgement_link = str(request.url_for("acknowledge_page", complaint_id=complaint_id)) + f"?token={customer_token}"
+    if status == "Pending":
+        engineer_email = ENGINEER_EMAIL_MAP.get(engineer_code, "").strip()
+        if engineer_email:
+            engineer_link = str(request.url_for("engineer_page")) + f"?token={token}"
+            mail_subject = f"[{engineer_code}] Update Status for Complaint - {complaint_id}"
+            mail_body = f"""
+Hello,
 
-    if updated_complaint and updated_complaint.get("email"):
-        mail_subject = f"Complaint {complaint_id} has been resolved"
-        mail_body = f"""
+You have set the status of Complaint {complaint_id} to Pending.
+
+Please update the status when the issue is resolved:
+{engineer_link}
+
+Regards,
+Support Team
+""".strip()
+            send_email(engineer_email, mail_subject, mail_body)
+    elif status == "Resolved":
+        customer_token = generate_token({
+            "complaint_id": complaint_id,
+            "role": "customer_ack"
+        })
+        acknowledgement_link = str(request.url_for("acknowledge_page", complaint_id=complaint_id)) + f"?token={customer_token}"
+
+        if updated_complaint and updated_complaint.get("email"):
+            mail_subject = f"Complaint {complaint_id} has been resolved"
+            mail_body = f"""
 Hello {updated_complaint.get('name', '')},
 
 Your complaint has been resolved.
@@ -1724,7 +1745,7 @@ Regards,
 Support Team
 """.strip()
 
-        send_email(updated_complaint.get("email"), mail_subject, mail_body)
+            send_email(updated_complaint.get("email"), mail_subject, mail_body)
 
     encoded_solution = quote_plus(solution.strip())
     return RedirectResponse(
