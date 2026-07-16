@@ -42,8 +42,8 @@ app = FastAPI(lifespan=lifespan)
 templates = Jinja2Templates(directory="templates")
 
 
-EXCEL_FILE = os.path.abspath("RNV-DESKTOP-DETAILS.xlsx")
-COMPLAINTS_FILE = os.path.abspath("complaints.xlsx")
+EXCEL_FILE = os.getenv("EXCEL_FILE_PATH", os.path.abspath("RNV-DESKTOP-DETAILS.xlsx"))
+COMPLAINTS_FILE = os.getenv("COMPLAINTS_FILE_PATH", os.path.abspath("complaints.xlsx"))
 
 
 ADMIN_EMAILS = [
